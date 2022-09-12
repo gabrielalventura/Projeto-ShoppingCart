@@ -1,5 +1,5 @@
 require('../mocks/fetchSimulator');
-const { expect } = require('chai');
+// const { expect } = require('chai');
 const { fetchProducts } = require('../helpers/fetchProducts');
 const computadorSearch = require('../mocks/search');
 const { expect } = require('@jest/globals');
@@ -13,7 +13,7 @@ describe('1 - Teste a função fetchProducts', () => {
   it('Execute a função fetchProducts com o argumento `computador` e teste se fetch foi chamada', async () => {
     await fetchProducts('computador');
 
-    expect(fetch).toHaveBeenCalled(1);
+    expect(fetch).toHaveBeenCalled();
   });
 
   it('Teste se, ao chamar a função fetchProducts com o argumento `computador`, a função fetch utiliza o endpoint `https://api.mercadolibre.com/sites/MLB/search?q=computador`', async () => {
@@ -31,6 +31,6 @@ describe('1 - Teste a função fetchProducts', () => {
   it('Teste se, ao chamar a função fetchProducts sem argumento, retorna um erro com a mensagem: `You must provide an url`', async () => {
     const failSearch = await fetchProducts();
 
-    expect(failSearch).toEqual(new Error('You must provide an url'));
+    expect(failSearch).toEqual(new Error ('You must provide an url'));
   });
 });
