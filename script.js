@@ -3,6 +3,8 @@
 
 // Fique a vontade para modificar o código já escrito e criar suas próprias funções!
 
+const theItensSection = document.querySelector('.items');
+
 /**
  * Função responsável por criar e retornar o elemento de imagem do produto.
  * @param {string} imageSource - URL da imagem.
@@ -49,6 +51,14 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   return section;
 };
 
+const productList = (obj) => {
+  const products = obj.results;
+  products.forEach((product) => {
+    const section = createProductItemElement(product);
+    theItensSection.appendChild(section);
+  });
+};
+
 /**
  * Função que recupera o ID do produto passado como parâmetro.
  * @param {Element} product - Elemento do produto.
@@ -72,4 +82,7 @@ const createCartItemElement = ({ id, title, price }) => {
   return li;
 };
 
-window.onload = () => { };
+window.onload = async () => { 
+  const obj = await fetchProducts('computador');
+   productList(obj);
+};
