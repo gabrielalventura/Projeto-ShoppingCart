@@ -51,7 +51,8 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   return section;
 };
 
-const productList = (obj) => {
+const productList = async () => {
+  const obj = await fetchProducts('computador');
   const products = obj.results;
   products.forEach((product) => {
     const section = createProductItemElement(product);
@@ -64,7 +65,7 @@ const productList = (obj) => {
  * @param {Element} product - Elemento do produto.
  * @returns {string} ID do produto.
  */
-const getIdFromProductItem = (product) => product.querySelector('span.id').innerText;
+const getIdFromProductItem = (product) => product.querySelector('span.item_id').innerText;
 
 /**
  * Função responsável por criar e retornar um item do carrinho.
@@ -78,11 +79,23 @@ const createCartItemElement = ({ id, title, price }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-  li.addEventListener('click', cartItemClickListener);
+  // li.addEventListener('click', cartItemClickListener);
   return li;
 };
 
-window.onload = async () => { 
-  const obj = await fetchProducts('computador');
-   productList(obj);
+const showItem = async () => {
+  const theCart = document.querySelector('.cart__items');
+  const buttons = document.querySelectorAll('.item__add');
+  buttons.forEach((button) => {
+    button.addEventListener('click', async (event) => {
+      const itemId = event.target.parentNode.firstChild;
+      const data = await fetchItem(itemId.innerText);
+      theCart.appendChild(createCartItemElement(data));
+    });
+  });
+}; // desenvolvida com auxilio da mentoria do Tiago Quadros;
+
+window.onload = async () => {
+  await productList();
+  await showItem();
 };
