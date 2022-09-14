@@ -97,7 +97,21 @@ const showItem = async () => {
   });
 }; // desenvolvida com auxilio da mentoria do Tiago Quadros;
 
+const showLoading = () => {
+  const message = document.createElement('h4');
+  theItensSection.appendChild(message);
+  message.className = 'loading';
+  message.innerText = 'carregando...';
+};
+
+const removeLoading = () => {
+  const message = document.querySelector('.loading');
+  message.remove();
+};
+
 window.onload = async () => {
+  showLoading();
   await productList();
+  removeLoading();
   await showItem();
 };
