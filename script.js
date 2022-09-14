@@ -97,6 +97,15 @@ const showItem = async () => {
   });
 }; // desenvolvida com auxilio da mentoria do Tiago Quadros;
 
+const clearCart = () => {
+  const clearBtn = document.querySelector('.empty-cart');
+  
+  clearBtn.addEventListener('click', () => {
+    const fullCart = document.querySelector('.cart__items');
+    fullCart.innerHTML = '';
+  });
+};
+
 const showLoading = () => {
   const message = document.createElement('h4');
   theItensSection.appendChild(message);
@@ -114,4 +123,5 @@ window.onload = async () => {
   await productList();
   removeLoading();
   await showItem();
+  clearCart();
 };
