@@ -104,7 +104,7 @@ const clearCart = () => {
     const fullCart = document.querySelector('.cart__items');
     fullCart.innerHTML = '';
   });
-};
+}; 
 
 const showLoading = () => {
   const message = document.createElement('h4');
