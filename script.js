@@ -106,6 +106,7 @@ const clearCart = () => {
 
   clearBtn.addEventListener('click', () => {
     theCart.innerHTML = '';
+    localStorage.clear();
   });
 };
 
@@ -134,6 +135,6 @@ window.onload = async () => {
       itemToRemove.target.remove();
     });
   });
-  
+
   clearCart();
 };
