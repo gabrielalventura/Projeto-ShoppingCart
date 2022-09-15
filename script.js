@@ -1,9 +1,9 @@
 // Esse tipo de comentário que estão antes de todas as funções são chamados de JSdoc,
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições! 
-
 // Fique a vontade para modificar o código já escrito e criar suas próprias funções!
 
 const theItensSection = document.querySelector('.items');
+const theCart = document.querySelector('.cart__items');
 
 /**
  * Função responsável por criar e retornar o elemento de imagem do produto.
@@ -82,29 +82,32 @@ const createCartItemElement = ({ id, title, price }) => {
   li.addEventListener('click', (product) => {
     product.target.remove();
   });
+  // const savedCart = theCart.innerHTML;
+  // saveCartItems(savedCart);--> não funcionaria completamente aqui pois não salva todas as informações. Suspeito que seja porque elas precisam ser capturadas no storage assim que criadas, ou seja, logo após receberem o appendChild na criação dinamica das informações ao capturar os botões clicados. Ou seja nesse ponto a li foi criada e recebeu o clique, mas suas informações não foram completamente carregadas. 
   return li;
 };
 
-const showItem = async () => {
-  const theCart = document.querySelector('.cart__items');
+const showItem = () => {
   const buttons = document.querySelectorAll('.item__add');
   buttons.forEach((button) => {
     button.addEventListener('click', async (event) => {
       const itemId = event.target.parentNode.firstChild;
-      const data = await fetchItem(itemId.innerText);
+      const param = itemId.innerText;
+      const data = await fetchItem(param);
       theCart.appendChild(createCartItemElement(data));
+      const savedCart = theCart.innerHTML;
+      saveCartItems(savedCart);
     });
   });
 }; // desenvolvida com auxilio da mentoria do Tiago Quadros;
 
 const clearCart = () => {
   const clearBtn = document.querySelector('.empty-cart');
-  
+
   clearBtn.addEventListener('click', () => {
-    const fullCart = document.querySelector('.cart__items');
-    fullCart.innerHTML = '';
+    theCart.innerHTML = '';
   });
-}; 
+};
 
 const showLoading = () => {
   const message = document.createElement('h4');
@@ -122,6 +125,11 @@ window.onload = async () => {
   showLoading();
   await productList();
   removeLoading();
-  await showItem();
+  showItem();
+
+  const recoverItems = getSavedCartItems('cartItems');
+  const items = document.querySelector('.cart__items');
+  items.innerHTML = recoverItems;
+
   clearCart();
 };
