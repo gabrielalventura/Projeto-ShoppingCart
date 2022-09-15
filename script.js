@@ -126,10 +126,14 @@ window.onload = async () => {
   await productList();
   removeLoading();
   showItem();
+  theCart.innerHTML = getSavedCartItems('cartItems');
 
-  const recoverItems = getSavedCartItems('cartItems');
-  const items = document.querySelector('.cart__items');
-  items.innerHTML = recoverItems;
-
+  const itemsToRemove = document.querySelectorAll('.cart__items');
+  itemsToRemove.forEach((item) => {
+    item.addEventListener('click', (itemToRemove) => {
+      itemToRemove.target.remove();
+    });
+  });
+  
   clearCart();
 };
