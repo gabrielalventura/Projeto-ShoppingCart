@@ -4,6 +4,11 @@
 
 const theItensSection = document.querySelector('.items');
 const theCart = document.querySelector('.cart__items');
+let cartPrice = 0;
+const cart = document.querySelector('.cart');
+const totalPriceCart = document.createElement('p');
+cart.appendChild(totalPriceCart);
+totalPriceCart.className = 'total-price';
 
 /**
  * Função responsável por criar e retornar o elemento de imagem do produto.
@@ -95,11 +100,15 @@ const showItem = () => {
       const param = itemId.innerText;
       const data = await fetchItem(param);
       theCart.appendChild(createCartItemElement(data));
+      cartPrice += data.price;
+      totalPriceCart.innerHTML = `${cartPrice}`;
       const savedCart = theCart.innerHTML;
       saveCartItems(savedCart);
     });
   });
 }; // desenvolvida com auxilio da mentoria do Tiago Quadros;
+
+console.log(theCart);
 
 const clearCart = () => {
   const clearBtn = document.querySelector('.empty-cart');
