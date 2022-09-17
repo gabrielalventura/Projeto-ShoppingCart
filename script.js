@@ -4,11 +4,10 @@
 
 const theItensSection = document.querySelector('.items');
 const theCart = document.querySelector('.cart__items');
-let cartPrice = 0;
-const cart = document.querySelector('.cart');
-const totalPriceCart = document.createElement('p');
-cart.appendChild(totalPriceCart);
-totalPriceCart.className = 'total-price';
+const totalCart = document.querySelector('.cart');
+const priceInCart = document.createElement('h5');
+totalCart.appendChild(priceInCart);
+priceInCart.className = 'total-price';
 
 /**
  * Função responsável por criar e retornar o elemento de imagem do produto.
@@ -36,6 +35,16 @@ const createCustomElement = (element, className, innerText) => {
   return e;
 };
 
+const capturePrice = () => {
+  const cartItems = document.querySelectorAll('.cart__item');
+  let cartPrice = 0;
+  cartItems.forEach((item) => {
+    const price = Number(item.innerText.split('$')[1]);
+    cartPrice += price;
+  });
+  return cartPrice;
+}; // função desenvolvida com as dicas do Tiago Quadros na mentoria
+
 /**
  * Função responsável por criar e retornar o elemento do produto.
  * @param {Object} product - Objeto do produto. 
@@ -62,6 +71,7 @@ const productList = async () => {
   products.forEach((product) => {
     const section = createProductItemElement(product);
     theItensSection.appendChild(section);
+    priceInCart.innerHTML = capturePrice();
   });
 };
 
@@ -86,9 +96,11 @@ const createCartItemElement = ({ id, title, price }) => {
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
   li.addEventListener('click', (product) => {
     product.target.remove();
+    priceInCart.innerHTML = capturePrice();
   });
   // const savedCart = theCart.innerHTML;
   // saveCartItems(savedCart);--> não funcionaria completamente aqui pois não salva todas as informações. Suspeito que seja porque elas precisam ser capturadas no storage assim que criadas, ou seja, logo após receberem o appendChild na criação dinamica das informações ao capturar os botões clicados. Ou seja nesse ponto a li foi criada e recebeu o clique, mas suas informações não foram completamente carregadas. 
+  priceInCart.innerHTML = capturePrice();
   return li;
 };
 
@@ -100,15 +112,12 @@ const showItem = () => {
       const param = itemId.innerText;
       const data = await fetchItem(param);
       theCart.appendChild(createCartItemElement(data));
-      cartPrice += data.price;
-      totalPriceCart.innerHTML = `${cartPrice}`;
+      priceInCart.innerHTML = capturePrice();
       const savedCart = theCart.innerHTML;
       saveCartItems(savedCart);
     });
   });
 }; // desenvolvida com auxilio da mentoria do Tiago Quadros;
-
-console.log(theCart);
 
 const clearCart = () => {
   const clearBtn = document.querySelector('.empty-cart');
@@ -116,6 +125,7 @@ const clearCart = () => {
   clearBtn.addEventListener('click', () => {
     theCart.innerHTML = '';
     localStorage.clear();
+    priceInCart.innerHTML = capturePrice();
   });
 };
 
@@ -136,7 +146,10 @@ window.onload = async () => {
   await productList();
   removeLoading();
   showItem();
+
   theCart.innerHTML = getSavedCartItems('cartItems');
+
+  priceInCart.innerHTML = capturePrice();
 
   const itemsToRemove = document.querySelectorAll('.cart__items');
   itemsToRemove.forEach((item) => {
