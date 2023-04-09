@@ -20,7 +20,7 @@ Para instalar o projeto localmente, siga os seguintes passos:
 1. Clone o repositório com o comando 
 
 ```bash
- git clone git@github.com:brenolg/Shopping-Cart.git
+ git clone git@github.com:gabrielalventura/Projeto-ShoppingCart.git
 ```
 
 2. Instale as dependências com o comando npm install
